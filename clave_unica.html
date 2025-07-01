@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ingreso - ClaveÚnica</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        <div class="card shadow-sm w-100" style="max-width: 400px;">
+            <div class="card-body px-4 pb-4 pt-0">
+                <div class="mb-4">
+                    <img src="src/clave_unica_gob.png" style="height: 60px;" alt="Gobierno" class="d-block mb-2" />
+                    <h4 class="text-center">Servicio Nacional de Aduanas</h4>
+                </div>
+
+
+                <form onsubmit="return login(event)">
+                    <div class="mb-3">
+                        <label for="run" class="form-label">Ingresa tu RUN</label>
+                        <input type="text" id="run" class="form-control" placeholder="Ej: 12.345.678-9" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="clave" class="form-label">Ingresa tu ClaveÚnica</label>
+                        <div class="input-group">
+                            <input type="password" id="clave" class="form-control" required>
+                            <button class="btn btn-outline-secondary" type="button" onclick="toggleClave()">👁️</button>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <a href="#" class="d-block small mb-2">Recupera tu ClaveÚnica</a>
+                        <a href="#" class="d-block small mb-2">Solicita tu ClaveÚnica</a>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">INGRESA</button>
+                </form>
+
+                <div class="text-center mt-4">
+                    <small class="text-muted">Ayuda al 600 360 33 03</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleClave() {
+            const input = document.getElementById("clave");
+            input.type = input.type === "password" ? "text" : "password";
+        }
+
+        function login(event) {
+            event.preventDefault();
+            const run = document.getElementById("run").value;
+            const clave = document.getElementById("clave").value;
+
+            if (run == "12345678-9" && clave == "1234") {
+                window.location.href = "form.html";
+            } else {
+                alert("Usuario o contraseña incorrectos.");
+            }
+        }
+    </script>
+
+</body>
+
+</html>
