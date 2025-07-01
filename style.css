@@ -1,0 +1,38 @@
+nav {
+  background-color: #fff;
+  padding: 1rem;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+.text-aduana {
+  color: #003366;
+}
+
+.btn-aduana {
+  background-color: #003366;
+  color: #fff;
+  border: none;
+  transition: background 0.3s ease;
+}
+
+.btn-aduana:hover {
+  background-color: #952b2b;
+  color: #fff;
+}
+
+.card {
+  border-radius: 1rem !important;
+}
+
+.step {
+  transition: all 0.4s ease;
+}
+
+.form-check-label {
+  cursor: pointer;
+}
