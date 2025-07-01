@@ -94,32 +94,41 @@
                 <strong>Padrón:</strong>
                 <div class="d-flex flex-column">
                   <img id="visorPadron" src="" alt="Padrón"
-                    style="width: auto; max-width: 100%; height: 200px; width: fit-content; border: 2px solid #0d6efd; border-radius: 0.5rem; margin-top: 10px; box-shadow: 0 0 10px rgba(13, 110, 253, 0.5);"
+                    style="width: auto; max-width: 100%; height: 200px; width:fit-content; border-radius: 0.5rem; margin-top: 10px;"
                     loading="lazy" />
                   <button class="btn btn-outline-success btn-sm mt-3 align-self-start" id="validarPadron">Validar
                     Padrón</button>
                 </div>
               </li>
+
               <li class="mb-4">
-                <strong>Seguro Obligatorio:</strong>
-                <div class="d-flex flex-column">
-                  <img id="visorSeguro" src="" alt="Seguro"
-                    style="width: auto; max-width: 100%; height: 200px; width:fit-content ;border: 2px solid #0d6efd; border-radius: 0.5rem; margin-top: 10px; box-shadow: 0 0 10px rgba(13, 110, 253, 0.5);"
-                    loading="lazy" />
-                  <button class="btn btn-outline-success btn-sm mt-3 align-self-start" id="validarSeguro">Validar Seguro</button>
-                </div>
-              </li>
-              <li class="mb-4">
-                <div class="d-flex flex-column">
-                  <strong>Poder Notarial:</strong>
-                  <img id="visorPoder" src="" alt="Poder Notarial"
-                    style="width: auto; max-width: 100%; height: 200px; width: fit-content; border: 2px solid #0d6efd; border-radius: 0.5rem; margin-top: 10px; box-shadow: 0 0 10px rgba(13, 110, 253, 0.5);"
-                    loading="lazy" />
-                  <button class="btn btn-outline-success btn-sm mt-3 align-self-start" id="validarPoder">Validar Poder Notarial</button>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <strong>Seguro Obligatorio:</strong>
+                    <div class="d-flex flex-column">
+                      <img id="visorSeguro" src="" alt="Seguro"
+                        style="width: auto; height: 100px; width: fit-content; border-radius: 0.5rem; margin-top: 10px;"
+                        loading="lazy" />
+                      <button class="btn btn-outline-success btn-sm mt-3 align-self-start" id="validarSeguro">Validar
+                        Seguro</button>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <strong>Poder Notarial:</strong>
+                    <div class="d-flex flex-column">
+                      <img id="visorPoder" src="" alt="Poder Notarial"
+                        style="width: auto; height: 100px; width: fit-content; border-radius: 0.5rem; margin-top: 10px;"
+                        loading="lazy" />
+                      <button class="btn btn-outline-success btn-sm mt-3 align-self-start" id="validarPoder">Validar
+                        Poder Notarial</button>
+                    </div>
+                  </div>
                 </div>
               </li>
             </ul>
           </div>
+
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="fechaIngreso" class="form-label">Fecha de ingreso</label>
@@ -308,8 +317,8 @@
           document.getElementById('modalColor').textContent = tramiteSeleccionado.color;
           document.getElementById('modalChasis').textContent = tramiteSeleccionado.chasis;
           document.getElementById('visorPadron').src = "/src/padron.jpg";
-          document.getElementById('visorSeguro').src = "/src/seguro.png";
-          document.getElementById('visorPoder').src = "/src/notarial.png";
+          document.getElementById('visorSeguro').src = "/src/pdf.png";
+          document.getElementById('visorPoder').src = "/src/pdf.png";
           document.getElementById('fechaIngreso').value = new Date().toISOString().split('T')[0];
           document.getElementById('codigoTramite').value = generarCodigoTramite();
           document.getElementById('observaciones').value = '';
