@@ -6,29 +6,38 @@
   <title>Panel Jefe de Turno - Aduanas</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    iframe {
+      width: 100%;
+      height: 300px;
+      border: 2px solid #0d6efd;
+      border-radius: 0.5rem;
+      margin-top: 10px;
+    }
+
+    .btn-validado {
+      background-color: #198754 !important;
+      color: white;
+    }
+  </style>
 </head>
 
 <body>
-    <nav class="navbar px-3" >
-        <div class="container-fluid d-flex justify-content-between align-items-center">
-            <img src="/src/gobierno.png" style="height: 110px;" alt="Gobierno">
-            <img src="/src/aduana.jpg" style="height: 110px;" alt="Aduana">
-        </div>
-    </nav>
-
+  <nav class="navbar px-3">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+      <img src="/src/gobierno.png" style="height: 110px;" alt="Gobierno">
+      <img src="/src/aduana.jpg" style="height: 110px;" alt="Aduana">
+    </div>
+  </nav>
   <div class="container py-5">
     <div class="mx-auto" style="max-width: 960px;">
       <div class="card shadow border-0 rounded-4">
         <div class="card-body p-5">
           <h2 class="fw-bold text-primary text-center mb-4">Panel del Fiscalizador</h2>
           <p class="text-muted text-center mb-4">Revisión y gestión de trámites con estado pendiente o rechazado.</p>
-
-          <!-- Buscador de patente -->
           <div class="mb-3">
             <input type="text" id="inputBuscarPatente" class="form-control" placeholder="Buscar por patente..." />
           </div>
-
           <div class="table-responsive">
             <table class="table table-bordered align-middle text-center">
               <thead class="table-light">
@@ -43,7 +52,6 @@
               <tbody id="tablaTramites"></tbody>
             </table>
           </div>
-
           <div id="sinTramites" class="alert alert-info mt-4 d-none" role="alert">
             No hay trámites pendientes o rechazados para mostrar.
           </div>
@@ -52,13 +60,12 @@
     </div>
   </div>
 
-  <!-- Modal Evaluación -->
   <div class="modal fade" id="modalEvaluacion" tabindex="-1" aria-labelledby="modalEvaluacionLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalEvaluacionLabel">Evaluar Trámite</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          <h5 class="modal-title">Evaluar Trámite</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
           <div class="row mb-3">
@@ -67,9 +74,10 @@
               <p><strong>Documento:</strong> <span id="modalDocumento"></span></p>
               <p><strong>Patente:</strong> <span id="modalPatente"></span></p>
               <p><strong>Estado actual:</strong> <span id="modalEstado"></span></p>
+              <p><strong>Color:</strong> <span id="modalColor"></span></p>
+              <p><strong>Número de chasis:</strong> <span id="modalChasis"></span></p>
             </div>
             <div class="col-md-6">
-              <strong>Datos del vehículo:</strong>
               <ul class="list-unstyled">
                 <li><strong>Tipo:</strong> <span id="modalTipoVehiculo">-</span></li>
                 <li><strong>Marca:</strong> <span id="modalMarca">-</span></li>
@@ -78,64 +86,58 @@
               </ul>
             </div>
           </div>
-
           <div class="mb-3">
             <strong>Documentos adjuntos:</strong>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="modalPadron" disabled />
-              <label class="form-check-label" for="modalPadron">Padrón</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="modalSeguro" disabled />
-              <label class="form-check-label" for="modalSeguro">Seguro Obligatorio</label>
-            </div>
+            <ul class="list-unstyled">
+              <li class="mb-4">
+                <strong>Padrón:</strong>
+                <div class="d-flex flex-column">
+                  <img id="visorPadron" src="" alt="Padrón"
+                    style="width: auto; max-width: 100%; height: 200px; width: fit-content; border: 2px solid #0d6efd; border-radius: 0.5rem; margin-top: 10px; box-shadow: 0 0 10px rgba(13, 110, 253, 0.5);"
+                    loading="lazy" />
+                  <button class="btn btn-outline-success btn-sm mt-3 align-self-start" id="validarPadron">Validar
+                    Padrón</button>
+                </div>
+              </li>
+              <li class="mb-4">
+                <strong>Seguro Obligatorio:</strong>
+                <div class="d-flex flex-column">
+                  <img id="visorSeguro" src="" alt="Seguro"
+                    style="width: auto; max-width: 100%; height: 200px; width:fit-content ;border: 2px solid #0d6efd; border-radius: 0.5rem; margin-top: 10px; box-shadow: 0 0 10px rgba(13, 110, 253, 0.5);"
+                    loading="lazy" />
+                  <button class="btn btn-outline-success btn-sm mt-3 align-self-start" id="validarSeguro">Validar Seguro</button>
+                </div>
+              </li>
+              <li class="mb-4">
+                <div class="d-flex flex-column">
+                  <strong>Poder Notarial:</strong>
+                  <img id="visorPoder" src="" alt="Poder Notarial"
+                    style="width: auto; max-width: 100%; height: 200px; width: fit-content; border: 2px solid #0d6efd; border-radius: 0.5rem; margin-top: 10px; box-shadow: 0 0 10px rgba(13, 110, 253, 0.5);"
+                    loading="lazy" />
+                  <button class="btn btn-outline-success btn-sm mt-3 align-self-start" id="validarPoder">Validar Poder Notarial</button>
+                </div>
+              </li>
+            </ul>
           </div>
-
-          <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="verificadoPoderNotarial" />
-            <label class="form-check-label" for="verificadoPoderNotarial">Poder notarial verificado (si aplica)</label>
-          </div>
-
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="fechaIngreso" class="form-label">Fecha de ingreso a aduana</label>
-              <input type="date" class="form-control" id="fechaIngreso" />
+              <label for="fechaIngreso" class="form-label">Fecha de ingreso</label>
+              <input type="date" class="form-control" id="fechaIngreso" readonly>
             </div>
             <div class="col-md-6">
               <label for="codigoTramite" class="form-label">Código de trámite</label>
-              <input type="text" class="form-control" id="codigoTramite" placeholder="Ej: TRM-123456" />
+              <input type="text" class="form-control" id="codigoTramite" readonly>
             </div>
           </div>
-
           <div class="mb-3">
             <label for="observaciones" class="form-label">Observaciones</label>
-            <textarea class="form-control" id="observaciones" rows="3" placeholder="Anotar detalles o incidencias..."></textarea>
-          </div>
-
-          <div class="form-check mb-3">
-            <input class="form-check-input" type="checkbox" id="reabrirTramite" />
-            <label class="form-check-label text-danger fw-bold" for="reabrirTramite">
-              Reabrir trámite (solo una vez). Se notificará al ciudadano.
-            </label>
-          </div>
-
-          <div id="opcionesNotificacion" class="mb-3" style="display: none;">
-            <label class="form-label">Notificar por:</label>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="notifCorreo" />
-              <label class="form-check-label" for="notifCorreo">Correo electrónico</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="notifSMS" />
-              <label class="form-check-label" for="notifSMS">SMS</label>
-            </div>
+            <textarea class="form-control" id="observaciones" rows="3"></textarea>
           </div>
         </div>
-
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-warning" id="btnReabrir" style="display: none;">Reabrir Trámite</button>
-          <button type="button" class="btn btn-primary" id="guardarEvaluacion">Finalizar Trámite</button>
+          <button class="btn btn-danger" id="rechazarEvaluacion">Rechazar Trámite</button>
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button class="btn btn-primary" id="guardarEvaluacion">Aprobar Trámite</button>
         </div>
       </div>
     </div>
@@ -148,167 +150,236 @@
         {
           patente: 'ABCD12',
           ciudadano: 'Juan Pérez Soto',
-          documento: 'C.I. 12.345.678-9',
+          documento: '12.345.678-9',
           estado: 'pendiente',
-          puedeReabrir: true,
-          tipoVehiculo: 'Automóvil',
-          marca: 'Ford',
-          modelo: 'Focus',
-          ano: 2016,
-          padronAdjuntado: true,
-          seguroAdjuntado: true,
-          fechaIngreso: '',
-          codigoTramite: '',
-          observaciones: '',
-          poderNotarialVerificado: false,
-        },
-        {
-          patente: 'XYZ123',
-          ciudadano: 'María Torres',
-          documento: 'Pasaporte X1234567',
-          estado: 'rechazado',
-          puedeReabrir: true,
-          tipoVehiculo: 'Camioneta',
+          tipoVehiculo: 'Auto',
           marca: 'Toyota',
-          modelo: 'Hilux',
-          ano: 2018,
-          padronAdjuntado: false,
-          seguroAdjuntado: true,
-          fechaIngreso: '',
-          codigoTramite: '',
-          observaciones: '',
-          poderNotarialVerificado: false,
+          modelo: 'Corolla',
+          ano: 2017,
+          color: 'Gris',
+          chasis: 'JTDBR32E820045678'
         },
         {
-          patente: 'JKL789',
-          ciudadano: 'Luis Rojas',
-          documento: 'C.I. 9.876.543-2',
-          estado: 'aceptado',
-          puedeReabrir: false,
-          tipoVehiculo: 'Camión',
-          marca: 'Scania',
-          modelo: 'R450',
+          patente: 'EFGH34',
+          ciudadano: 'María López Díaz',
+          documento: '21.876.543-2',
+          estado: 'pendiente',
+          tipoVehiculo: 'SUV',
+          marca: 'Hyundai',
+          modelo: 'Tucson',
           ano: 2020,
-          padronAdjuntado: true,
-          seguroAdjuntado: true,
-          fechaIngreso: '',
-          codigoTramite: '',
-          observaciones: '',
-          poderNotarialVerificado: false,
+          color: 'Rojo',
+          chasis: 'KMHJU81BP8U823456'
+        },
+        {
+          patente: 'NOPQ78',
+          ciudadano: 'Sofía Fernández Ruiz',
+          documento: '18.234.567-0',
+          estado: 'pendiente',
+          tipoVehiculo: 'Camioneta',
+          marca: 'Ford',
+          modelo: 'Ranger',
+          ano: 2021,
+          color: 'Azul',
+          chasis: '1FTER4FH8KLB12345'
+        },
+        {
+          patente: 'RSTU90',
+          ciudadano: 'Jorge Alberto Gómez',
+          documento: '23.456.789-1',
+          estado: 'rechazado',
+          reabierto: false,
+          tipoVehiculo: 'SUV',
+          marca: 'Mazda',
+          modelo: 'CX-5',
+          ano: 2019,
+          color: 'Negro',
+          chasis: 'JM3KFBCM4J0523456'
+        },
+        {
+          patente: 'ZABC34',
+          ciudadano: 'Luis Fernando Pérez',
+          documento: '17.654.321-5',
+          estado: 'pendiente',
+          tipoVehiculo: 'Camioneta',
+          marca: 'Chevrolet',
+          modelo: 'Colorado',
+          ano: 2022,
+          color: 'Verde',
+          chasis: '1GCGTBE36F1234567'
+        },
+        {
+          patente: 'DEFG56',
+          ciudadano: 'María Elena Soto',
+          documento: '20.987.654-3',
+          estado: 'rechazado',
+          reabierto: false,
+          tipoVehiculo: 'SUV',
+          marca: 'Kia',
+          modelo: 'Sportage',
+          ano: 2020,
+          color: 'Blanco',
+          chasis: 'KNDPMCAC7J7123456'
+        },
+        {
+          patente: 'LMNO90',
+          ciudadano: 'Lucía Gabriela Reyes',
+          documento: '22.123.456-7',
+          estado: 'pendiente',
+          tipoVehiculo: 'Camioneta',
+          marca: 'Nissan',
+          modelo: 'Frontier',
+          ano: 2019,
+          color: 'Negro',
+          chasis: '1N6AD0EV7KN123456'
         }
       ];
 
+      const tabla = document.getElementById('tablaTramites');
+      const sinTramites = document.getElementById('sinTramites');
+      const modal = new bootstrap.Modal(document.getElementById('modalEvaluacion'));
       let tramiteSeleccionado = null;
-      const tablaTramites = document.getElementById('tablaTramites');
-      const mensajeSinTramites = document.getElementById('sinTramites');
-      const modalElem = document.getElementById('modalEvaluacion');
-      const modalBootstrap = new bootstrap.Modal(modalElem);
 
-      // Función para mostrar la tabla filtrando por patente si aplica
-      function cargarTabla(filtro = '') {
-        tablaTramites.innerHTML = '';
-        let hayTramites = false;
-        const filtroLower = filtro.toLowerCase();
+      function generarCodigoTramite() {
+        return 'TRM-' + Math.floor(100000 + Math.random() * 900000);
+      }
 
-        tramitesMock.forEach((t, index) => {
-          if ((t.estado === 'pendiente' || t.estado === 'rechazado') &&
-            t.patente.toLowerCase().includes(filtroLower)) {
-            hayTramites = true;
-            const fila = document.createElement('tr');
-            fila.innerHTML = `
-              <td>${t.patente}</td>
-              <td>${t.ciudadano}</td>
-              <td>${t.documento}</td>
-              <td>${t.estado.toUpperCase()}</td>
-              <td><button class="btn btn-sm btn-outline-primary" data-index="${index}">Evaluar</button></td>
-            `;
-            tablaTramites.appendChild(fila);
+      function cargarTabla() {
+        tabla.innerHTML = '';
+        const tramitesVisibles = tramitesMock.filter(t => t.estado !== 'aceptado');
+
+        if (!tramitesVisibles.length) {
+          sinTramites.classList.remove('d-none');
+          return;
+        }
+        sinTramites.classList.add('d-none');
+
+        tramitesVisibles.forEach((t, i) => {
+          let botonHTML = '';
+          if (t.estado === 'pendiente') {
+            botonHTML = `<button class="btn btn-outline-primary btn-sm" data-index="${i}">Evaluar</button>`;
+          } else if (t.estado === 'rechazado') {
+            if (!t.reabierto) {
+              botonHTML = `<button class="btn btn-warning btn-sm" data-index="${i}" data-reabrir="true">Reabrir</button>`;
+            } else {
+              botonHTML = `<button class="btn btn-secondary btn-sm" disabled>No se puede reabrir</button>`;
+            }
           }
+          const fila = document.createElement('tr');
+          fila.innerHTML = `
+            <td>${t.patente}</td>
+            <td>${t.ciudadano}</td>
+            <td>${t.documento}</td>
+            <td>${t.estado.toUpperCase()}</td>
+            <td>${botonHTML}</td>
+          `;
+          tabla.appendChild(fila);
         });
-
-        mensajeSinTramites.classList.toggle('d-none', hayTramites);
       }
 
-      // Evento para buscar patente
-      document.getElementById('inputBuscarPatente').addEventListener('input', (e) => {
-        cargarTabla(e.target.value);
-      });
-
-      tablaTramites.addEventListener('click', (e) => {
+      tabla.addEventListener('click', (e) => {
         if (e.target.tagName === 'BUTTON') {
-          const index = e.target.getAttribute('data-index');
-          abrirModal(index);
+          const tramitesVisibles = tramitesMock.filter(t => t.estado !== 'aceptado');
+          const index = parseInt(e.target.dataset.index);
+          const tramite = tramitesVisibles[index];
+
+          if (e.target.dataset.reabrir === 'true') {
+            const indexReal = tramitesMock.findIndex(t => t.patente === tramite.patente && t.documento === tramite.documento);
+            if (indexReal !== -1 && !tramitesMock[indexReal].reabierto) {
+              tramitesMock[indexReal].estado = 'pendiente';
+              tramitesMock[indexReal].reabierto = true;
+              alert(`Trámite ${tramitesMock[indexReal].patente} reabierto para evaluación.`);
+              cargarTabla();
+            }
+            return;
+          }
+
+          tramiteSeleccionado = tramitesMock.find(t => t.patente === tramite.patente && t.documento === tramite.documento);
+
+          document.getElementById('modalCiudadano').textContent = tramiteSeleccionado.ciudadano;
+          document.getElementById('modalDocumento').textContent = tramiteSeleccionado.documento;
+          document.getElementById('modalPatente').textContent = tramiteSeleccionado.patente;
+          document.getElementById('modalEstado').textContent = tramiteSeleccionado.estado.toUpperCase();
+          document.getElementById('modalTipoVehiculo').textContent = tramiteSeleccionado.tipoVehiculo;
+          document.getElementById('modalMarca').textContent = tramiteSeleccionado.marca;
+          document.getElementById('modalModelo').textContent = tramiteSeleccionado.modelo;
+          document.getElementById('modalAno').textContent = tramiteSeleccionado.ano;
+          document.getElementById('modalColor').textContent = tramiteSeleccionado.color;
+          document.getElementById('modalChasis').textContent = tramiteSeleccionado.chasis;
+          document.getElementById('visorPadron').src = "/src/padron.jpg";
+          document.getElementById('visorSeguro').src = "/src/seguro.png";
+          document.getElementById('visorPoder').src = "/src/notarial.png";
+          document.getElementById('fechaIngreso').value = new Date().toISOString().split('T')[0];
+          document.getElementById('codigoTramite').value = generarCodigoTramite();
+          document.getElementById('observaciones').value = '';
+          modal.show();
         }
       });
 
-      function abrirModal(index) {
-        tramiteSeleccionado = index;
-        const t = tramitesMock[index];
-
-        document.getElementById('modalCiudadano').textContent = t.ciudadano;
-        document.getElementById('modalDocumento').textContent = t.documento;
-        document.getElementById('modalPatente').textContent = t.patente;
-        document.getElementById('modalEstado').textContent = t.estado.toUpperCase();
-
-        document.getElementById('modalTipoVehiculo').textContent = t.tipoVehiculo || '-';
-        document.getElementById('modalMarca').textContent = t.marca || '-';
-        document.getElementById('modalModelo').textContent = t.modelo || '-';
-        document.getElementById('modalAno').textContent = t.ano || '-';
-
-        document.getElementById('modalPadron').checked = t.padronAdjuntado || false;
-        document.getElementById('modalSeguro').checked = t.seguroAdjuntado || false;
-
-        document.getElementById('verificadoPoderNotarial').checked = t.poderNotarialVerificado || false;
-        document.getElementById('fechaIngreso').value = t.fechaIngreso || '';
-        document.getElementById('codigoTramite').value = t.codigoTramite || '';
-        document.getElementById('observaciones').value = t.observaciones || '';
-        document.getElementById('reabrirTramite').checked = false;
-        document.getElementById('opcionesNotificacion').style.display = 'none';
-        document.getElementById('btnReabrir').style.display = 'none';
-        document.getElementById('guardarEvaluacion').style.display = 'inline-block';
-
-        modalBootstrap.show();
+      function toggleValidacion(button, textoOriginal, textoValidado) {
+        button.classList.toggle('btn-validado');
+        button.textContent = button.classList.contains('btn-validado') ? textoValidado : textoOriginal;
       }
 
-      document.getElementById('reabrirTramite').addEventListener('change', function () {
-        const mostrar = this.checked;
-        document.getElementById('opcionesNotificacion').style.display = mostrar ? 'block' : 'none';
-        document.getElementById('btnReabrir').style.display = mostrar ? 'inline-block' : 'none';
-        document.getElementById('guardarEvaluacion').style.display = mostrar ? 'none' : 'inline-block';
+      document.getElementById('validarPadron').addEventListener('click', (e) => {
+        toggleValidacion(e.target, 'Validar Padrón', 'Padrón Validado');
       });
 
-      document.getElementById('btnReabrir').addEventListener('click', function () {
-        if (tramiteSeleccionado === null) return;
+      document.getElementById('validarSeguro').addEventListener('click', (e) => {
+        toggleValidacion(e.target, 'Validar Seguro', 'Seguro Validado');
+      });
 
-        const notifCorreo = document.getElementById('notifCorreo').checked;
-        const notifSMS = document.getElementById('notifSMS').checked;
-        const tramite = tramitesMock[tramiteSeleccionado];
+      document.getElementById('validarPoder').addEventListener('click', (e) => {
+        toggleValidacion(e.target, 'Validar Poder Notarial', 'Poder Validado');
+      });
 
-        if (tramite.puedeReabrir) {
-          tramite.puedeReabrir = false;
-          tramite.estado = 'pendiente';
-          alert(`Trámite reabierto.\nNotificado por: ${notifCorreo ? 'Correo ' : ''}${notifSMS ? 'SMS' : ''}`);
-        } else {
-          alert("Este trámite ya no puede ser reabierto.");
+      document.getElementById('guardarEvaluacion').addEventListener('click', () => {
+        const btnPadron = document.getElementById('validarPadron');
+        const btnSeguro = document.getElementById('validarSeguro');
+        const btnPoder = document.getElementById('validarPoder');
+
+        const padronValidado = btnPadron.classList.contains('btn-validado');
+        const seguroValidado = btnSeguro.classList.contains('btn-validado');
+        const poderValidado = btnPoder.classList.contains('btn-validado');
+
+        if (!padronValidado || !seguroValidado || !poderValidado) {
+          alert('Debe validar todos los documentos antes de aprobar el trámite.');
+          return;
         }
 
-        modalBootstrap.hide();
-        cargarTabla(document.getElementById('inputBuscarPatente').value);
+        tramiteSeleccionado.fechaIngreso = document.getElementById('fechaIngreso').value;
+        tramiteSeleccionado.codigoTramite = document.getElementById('codigoTramite').value;
+        tramiteSeleccionado.observaciones = document.getElementById('observaciones').value;
+        tramiteSeleccionado.estado = 'aceptado';
+        modal.hide();
+        cargarTabla();
+        alert('Trámite aprobado y finalizado. Ciudadano notificado.');
       });
 
-      document.getElementById('guardarEvaluacion').addEventListener('click', function () {
-        if (tramiteSeleccionado === null) return;
+      document.getElementById('rechazarEvaluacion').addEventListener('click', () => {
+        const btnPadron = document.getElementById('validarPadron');
+        const btnSeguro = document.getElementById('validarSeguro');
+        const btnPoder = document.getElementById('validarPoder');
 
-        const tramite = tramitesMock[tramiteSeleccionado];
-        tramite.poderNotarialVerificado = document.getElementById('verificadoPoderNotarial').checked;
-        tramite.fechaIngreso = document.getElementById('fechaIngreso').value;
-        tramite.codigoTramite = document.getElementById('codigoTramite').value.trim();
-        tramite.observaciones = document.getElementById('observaciones').value.trim();
-        tramite.estado = 'aceptado';
+        const padronValidado = btnPadron.classList.contains('btn-validado');
+        const seguroValidado = btnSeguro.classList.contains('btn-validado');
+        const poderValidado = btnPoder.classList.contains('btn-validado');
 
-        alert("Trámite finalizado y ciudadano notificado.");
-        modalBootstrap.hide();
-        cargarTabla(document.getElementById('inputBuscarPatente').value);
+        if (padronValidado && seguroValidado && poderValidado) {
+          alert('No puede rechazar el trámite porque todos los documentos están validados.');
+          return;
+        }
+
+        tramiteSeleccionado.fechaIngreso = document.getElementById('fechaIngreso').value;
+        tramiteSeleccionado.codigoTramite = document.getElementById('codigoTramite').value;
+        tramiteSeleccionado.observaciones = document.getElementById('observaciones').value;
+        tramiteSeleccionado.estado = 'rechazado';
+        if (tramiteSeleccionado.reabierto === undefined) {
+          tramiteSeleccionado.reabierto = false;
+        }
+        modal.hide();
+        cargarTabla();
+        alert('Trámite rechazado y finalizado. Ciudadano notificado.');
       });
 
       cargarTabla();
